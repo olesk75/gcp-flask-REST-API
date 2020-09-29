@@ -1,4 +1,3 @@
-# [START gae_python38_cloudsql_mysql]
 import os
 
 from flask import Flask, jsonify, request, Blueprint
@@ -14,11 +13,11 @@ db_connection_name = os.environ.get('CLOUD_SQL_CONNECTION_NAME')
 
 app = Flask(__name__)
 
-"""Queries database for full row of data
-
-    Returns sql query text
-"""
-def db_lookup(conn,
+###
+#    Queries database for full row of data
+#    Returns sql query text
+def db_lookup(
+    conn,
     indicator=None,
     indicator_description=None,
     country_iso_code=None,
@@ -98,7 +97,7 @@ def db_lookup(conn,
         sql = sql.replace("='NULL'", "is NULL")
 
     # This is a minimum-overhead trick to force a database reconnect if conenction is broken, for example due to database server rebooting
-    #conn.ping(reconnect=True)
+    # conn.ping(reconnect=True)
 
     with conn.cursor(pymysql.cursors.DictCursor) as cursor:
         try:
@@ -108,9 +107,8 @@ def db_lookup(conn,
             print(f"ERROR: {e}")
             result = None
     conn.close
-          
-    return result
 
+    return result
 
 
 # Only used to get status
@@ -136,13 +134,15 @@ def main():
         current_time = result[0][0]
     cnx.close()
 
-    return str(f"{current_time} - database connection to {db_connection_name} successful") 
+    return str(f"{current_time} - database connection to {db_connection_name} successful")
 
+
+# The main query route
 @app.route("/query", methods=["GET"])
 def get_entry():
-    """Gets encoded string from URL, decodes and searches database. 
+    """Gets encoded string from URL, decodes and searches database.
 
-    Arguments:  
+    Arguments:
         slug {str} -- URL encoded string
 
     Returns:
@@ -240,6 +240,6 @@ def get_entry():
     return resp
 
 
-# For local testing
+# For local testing - ignored in the cloud instance
 if __name__ == '__main__':
     app.run(host='127.0.0.1', port=8080, debug=True)

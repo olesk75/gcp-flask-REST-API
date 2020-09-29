@@ -112,7 +112,7 @@ def db_lookup(
 
 
 # Only used to get status
-@app.route('/')
+@app.route('/status')
 def main():
     # When deployed to App Engine, the `GAE_ENV` environment variable will be
     # set to `standard`

@@ -1,6 +1,8 @@
 import os
 
 from flask import Flask, jsonify, request, Blueprint
+from flask_cors import CORS
+
 import pymysql
 import simplejson as json
 
@@ -12,6 +14,9 @@ db_table_name = os.environ.get('CLOUD_SQL_DATABASE_TABLE_NAME')
 db_connection_name = os.environ.get('CLOUD_SQL_CONNECTION_NAME')
 
 app = Flask(__name__)
+
+# Enabling Cross Origin Resource Sharing (CORS), making cross-origin AJAX possible.
+CORS(app)
 
 ###
 #    Queries database for full row of data

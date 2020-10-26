@@ -73,7 +73,12 @@ def db_lookup(
         if value:
             sql += f" AND `value`='{value}'"
         if value_comment:
-            sql += f" AND `value_comment`='{value_comment}'"
+            if str(value_comment).startswith('‼'):  # NOTE: If value_comment starts with DOUBLE exclamation mark, we negate the search
+                value_comment = value_comment.replace('‼', '')  # Removing the double exclamation mark from search string
+                sql += f" AND (`value_comment`<>'{value_comment}' OR `value_comment` is NULL)"
+            else:
+                sql += f" AND `value_comment`='{value_comment}'"
+
         if unit_format:
             sql += f" AND `unit_format`='{unit_format}'"
         if source_organization:

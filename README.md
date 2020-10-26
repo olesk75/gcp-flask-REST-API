@@ -10,7 +10,7 @@ Rename app.yaml-dist to app.yaml and fill out DB information.
 
 NOTE: requires simplejson!
 
-### Reminder:
+## Reminder
 
 `gcloud app deploy app.yaml` to deploy
 
